@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" >
+    <Appenders>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="Rolling-RAF-Appendar" fileName="E:\\LOG\\adisca-log\\adisca\\gateway.log"
+                                 filePattern="E:\\LOG\\adisca-log\\adisca\\gateway.%d{yyyy-MM-dd-hh-mm}.zip">
+            <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingRandomAccessFile>
+
+        <!--        <AsyncLogger name="async" level="DEBUG">
+                    <AppenderRef ref="Rolling-RAF-Appendar"/>
+                </AsyncLogger>-->
+
+    </Appenders>
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="Rolling-RAF-Appendar"/>
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

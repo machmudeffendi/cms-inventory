@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Simple Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-4.3.1/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/simple-custom.css">
+</head>
+<body class="bg-water-mid">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-4 mt-5">
+            <h2 class="text-center mb-5 text-white">Simple Register</h2>
+            <div class="card mb-5 a-card">
+                <div class="card-body">
+                    <form action="../signup" method="post">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Name ex: Bambang">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Name ex: bang@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Name ex: bambang">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" id="Password" placeholder="Password ex: xxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label for="rememberme">
+                                <input type="checkbox" name="rememberme" id="rememberme">
+                                You accept with our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </label>
+                        </div>
+                        <div class="form-group m-0">
+                            <button type="submit" class="btn btn-water-mid btn-block">Register</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="/" class="text-water-mid">You have a member? Login now!</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-login text-center ">
+                <p class="text-mid-low">Fends &copy; 2019</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jquery -->
+<script src="/vendors/bootstrap/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="/vendors/bootstrap/js/bootstrap-4.3.1/bootstrap.min.js"></script>
+<!-- Popper -->
+<script src="/vendors/bootstrap/js/popper/pooper.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "app.service": {
+    "web.ui.http.address": "localhost",
+    "web.ui.http.port": 8081
+  },
+  "database": {
+    "host" : "localhost",
+    "port" : 5432,
+    "maxPoolSize" : 30,
+    "username" : "postgres",
+    "password" : "arema123",
+    "database" : "lab",
+    "charset" : "utf-8"
+  }
+}

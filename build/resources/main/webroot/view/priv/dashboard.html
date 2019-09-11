@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{webroot/view/priv/layout/main_layout.html}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<ul class="nav flex-column" layout:fragment="menu">
+    <li class="nav-item">
+        <a href="/menu/dashboard" class="nav-link active"><i class="mdi mdi-monitor"></i> Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a href="/menu/product" class="nav-link"><i class="mdi mdi-lead-pencil"></i> Product</a>
+    </li>
+    <li class="nav-item">
+        <a href="/menu/report" class="nav-link"><i class="mdi mdi-table"></i> Report</a>
+    </li>
+</ul>
+
+<div class="container" layout:fragment="content">
+    <div class="content-header mt-2 mb-3">
+        <h2 class="text-header">Dashboard</h2>
+    </div>
+    <div class="alert alert-danger">
+        This template is under maintenance!
+    </div>
+    <div class="row mb-3 widget">
+        <div class="col-md-3 pr-1">
+            <div class="card alert-success">
+                <div class="card-body">
+                    <div class="float-left">
+                        <h3 class="value-widget">$ 153.000</h3>
+                        <label class="title-widget">Revenue</label>
+                    </div>
+                    <div class="float-right">
+                        <i class="mdi mdi-cash-usd-outline mdi-48px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 pr-1">
+            <div class="card alert-warning">
+                <div class="card-body">
+                    <div class="float-left">
+                        <h3 class="value-widget">20</h3>
+                        <label class="title-widget">Sales</label>
+                    </div>
+                    <div class="float-right">
+                        <i class="mdi mdi-cart mdi-48px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 pr-1">
+            <div class="card alert-primary">
+                <div class="card-body">
+                    <div class="float-left">
+                        <h3 class="value-widget">20</h3>
+                        <label class="title-widget">Customer</label>
+                    </div>
+                    <div class="float-right">
+                        <i class="mdi mdi-ticket-account mdi-48px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card alert-dark">
+                <div class="card-body">
+                    <div class="float-left">
+                        <h3 class="value-widget">20</h3>
+                        <label class="title-widget">Employee</label>
+                    </div>
+                    <div class="float-right">
+                        <i class="mdi mdi-gift mdi-48px"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-4.3.1/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/assets/css/simple-custom.css">
+        <link rel="stylesheet" type="text/css" href="/vendors/icon/mdi/css/materialdesignicons.min.css">
+
+        <title>Simple</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="col-md-2 sidebar">
+                        <div class="brand">
+                            <a href="#" class="brand-name">Simple Admin</a>
+                        </div>
+                        <div class="sidebar-sticky">
+                            <ul class="nav flex-column" layout:fragment="menu">
+                                <li class="nav-item">
+                                    <a href="dashboard.html" class="nav-link active"><i class="mdi mdi-monitor"></i> Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="form.html" class="nav-link"><i class="mdi mdi-lead-pencil"></i> Product</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="table.html" class="nav-link"><i class="mdi mdi-table"></i> Report</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="nav-bottom">
+                            <ul class="nav">
+                                <li class="nav-item"><a href="#" class="nav-link"><i class="mdi mdi-account"></i></a></li>
+                                <li class="nav-item"><a href="#" class="nav-link"><i class="mdi mdi-message"></i></a></li>
+                                <li class="nav-item"><a href="#" class="nav-link"><i class="mdi mdi-bell"></i></a></li>
+                                <li class="nav-item"><a href="../logout" class="nav-link"><i class="mdi mdi-power"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <main class="col-md-9 col-lg-10" role="main">
+                    <div layout:fragment="content">
+
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Jquery -->
+        <script src="../vendors/bootstrap/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="../vendors/bootstrap/js/bootstrap-4.3.1/bootstrap.min.js"></script>
+        <!-- Popper -->
+        <script src="../vendors/bootstrap/js/popper/pooper.min.js"></script>
+        <th:block layout:fragment="additional-script">
+
+        </th:block>
+    </body>
+</html>
