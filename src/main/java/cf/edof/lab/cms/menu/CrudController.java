@@ -22,6 +22,7 @@ public class CrudController {
 
     public void addProduct(){
         JsonObject val = context.getBody().toJsonObject();
+        //System.out.println("CrudControler = "+val.encodePrettily());
 
         Product product = new Product();
         product.setProductName(val.getString("productName"));
@@ -29,6 +30,8 @@ public class CrudController {
         product.setCondition(val.getString("condition"));
         product.setQuantity(val.getInteger("quantity"));
         product.setTotalCost(val.getInteger("totalCost"));
+
+        //System.out.println("Product To save = "+product.toJson());
 
         JsonArray jsonArray = new JsonArray()
                 .add(product.getProductName())

@@ -54,6 +54,7 @@ public class MainUIVerticle extends AbstractVerticle {
         //Menu EndPoint
         router.get("/menu/dashboard").handler(this::menuController);
         router.get("/menu/product").handler(this::menuController);
+        router.post("/menu/save-product").handler(this::menuController);
 
         //Auth EndPoint API
         router.post("/account/auth").handler(this::accountController);
@@ -335,6 +336,8 @@ public class MainUIVerticle extends AbstractVerticle {
             menu.routeDashboard(templateEngine);
         }else if("/menu/product".equalsIgnoreCase(context.request().path())){
             menu.routeProduct(templateEngine, vertx);
+        }else if("/menu/save-product".equalsIgnoreCase(context.request().path())){
+            menu.saveProductContent(vertx);
         }
     }
 

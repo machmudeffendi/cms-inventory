@@ -47,12 +47,11 @@ public class MenuController {
                 .send(ar ->{
                     if (ar.succeeded()){
                         JsonObject response = ar.result().bodyAsJsonObject();
-                        System.out.println(response);
-                        if (response.containsKey("code") && response.getValue("code").equals("200")){
+                        //System.out.println(response.getValue("code").equals(200));
+                        if (response.containsKey("code") && response.getValue("code").equals(200)){
                             List<AllProduct> allProducts = response.getJsonArray("product")
                                     .stream().map(s -> new AllProduct(JsonObject.mapFrom(s)))
                                     .collect(Collectors.toList());
-                            System.out.println(allProducts);
 
                             Session session = context.session();
 
@@ -71,9 +70,10 @@ public class MenuController {
                                     : new JsonObject(AES.decrypt(cookie.getValue(),"edof"));
 
                             JsonObject data = new JsonObject()
-                                    .put("product", allProducts)
+                                    .put("productList", allProducts)
                                     .put("loginUserData",userData)
                                     .put("username", userData.getString("username"));
+                            //System.out.println(data.encodePrettily());
 
                             templateEngine.render(data, "webroot/view/priv/product.html", er ->{
                                 if (er.succeeded()){
@@ -82,11 +82,38 @@ public class MenuController {
                                             .end(er.result());
                                 }else{
                                     context.fail(er.cause());
+
                                 }
                             });
                         }
                     }else{
                         logger.debug(ar.cause().getMessage());
+                    }
+                });
+
+    }
+
+    public void saveProductContent(Vertx vertx){
+        JsonObject productObj = new JsonObject()
+                .put("productName",context.request().getParam("product_name"))
+                .put("price",Integer.parseInt(context.request().getParam("price")))
+                .put("condition",context.request().getParam("condition"))
+                .put("quantity",Integer.parseInt(context.request().getParam("quantity")))
+                .put("totalCost",Integer.parseInt(context.request().getParam("total_cost")));
+        //System.out.println(productObj.encodePrettily());
+
+        WebClient client = WebClient.create(vertx);
+
+        client.post(8081,"localhost","/crud/addproduct")
+                .putHeader("content-type","appilcation/json")
+                .sendJsonObject(productObj, ar ->{
+                    if (ar.succeeded()){
+                        context.response()
+                                .putHeader("location","/menu/product")
+                                .setStatusCode(302)
+                                .end();
+                    }else{
+                        context.fail(ar.cause());
                     }
                 });
 

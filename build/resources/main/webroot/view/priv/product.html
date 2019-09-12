@@ -29,35 +29,37 @@
             <div class="card">
                 <div class="card-body">
                     <label class="title-body">From Product</label>
-                    <div class="form-group">
-                        <label for="name-b">Product Name</label>
-                        <input type="text" class="form-control" name="product_name" id="name-b" placeholder="ex: iPhone Xs">
-                    </div>
-                    <div class="form-group">
-                        <label for="cost-b">Price</label>
-                        <input type="number" class="form-control" name="price" id="cost-b" placeholder="Cost ex: $5">
-                    </div>
-                    <div class="form-group">
-                        <label>Condition</label>
-                        <div class="d-flex radio-b">
-                            <label for="condition-a">
-                                <input type="radio" class="radio-input" name="condition" id="condition-a" value="new"><label class="rc-label" for="condition-a"></label> New
-                            </label>
-                            <label for="condition-b" class="ml-5">
-                                <input type="radio" class="radio-input" name="condition" id="condition-b" value="used"><label class="rc-label" for="condition-b"></label> Used
-                            </label>
+                    <form action="/menu/save-product" method="post">
+                        <div class="form-group">
+                            <label for="name-b">Product Name</label>
+                            <input type="text" class="form-control" name="product_name" id="name-b" placeholder="ex: iPhone Xs">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="qty">Quantity</label>
-                        <input type="number" class="form-control" id="qty" name="quantity" placeholder="Quantity ex: 10">
-                    </div>
-                    <div class="form-group">
-                        <label for="total-b">Total Cost</label>
-                        <input type="number" name="total_cost" class="form-control" id="total-b" placeholder="Sum Cost ex: 50">
-                    </div>
-                    <button class="btn btn-water-mid">Submit</button>
-                    <button class="btn btn-secondary">Cancel</button>
+                        <div class="form-group">
+                            <label for="cost-b">Price</label>
+                            <input type="number" class="form-control" name="price" id="cost-b" placeholder="Cost ex: $5">
+                        </div>
+                        <div class="form-group">
+                            <label>Condition</label>
+                            <div class="d-flex radio-b">
+                                <label for="condition-a">
+                                    <input type="radio" class="radio-input" name="condition" id="condition-a" value="new"><label class="rc-label" for="condition-a"></label> New
+                                </label>
+                                <label for="condition-b" class="ml-5">
+                                    <input type="radio" class="radio-input" name="condition" id="condition-b" value="used"><label class="rc-label" for="condition-b"></label> Used
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="qty">Quantity</label>
+                            <input type="number" class="form-control" id="qty" name="quantity" placeholder="Quantity ex: 10">
+                        </div>
+                        <div class="form-group">
+                            <label for="total-b">Total Cost</label>
+                            <input type="number" name="total_cost" class="form-control" id="total-b" placeholder="Sum Cost ex: 50">
+                        </div>
+                        <button type="submit" class="btn btn-water-mid">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -67,14 +69,22 @@
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr>Name Product</tr>
-                                <tr>Price</tr>
-                                <tr>Condition</tr>
-                                <tr>Quantity</tr>
-                                <tr>Total Cost</tr>
+                                <tr>
+                                    <th>Name Product</th>
+                                    <th>Price</th>
+                                    <th>Condition</th>
+                                    <th>Quantity</th>
+                                    <th>Total Cost</th>
+                                </tr>
                             </thead>
                             <tbody>
-
+                                <tr th:each="product : ${productList}">
+                                    <td th:text="${product.productName}"></td>
+                                    <td th:text="${product.price}"></td>
+                                    <td th:text="${product.condition}"></td>
+                                    <td th:text="${product.quantity}"></td>
+                                    <td th:text="${product.totalCost}"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

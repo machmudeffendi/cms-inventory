@@ -14,12 +14,12 @@ public class AllProduct {
     }
 
     public AllProduct(JsonObject jsonObject) {
-        this.idProduct = jsonObject.getInteger("idProduct");
-        this.productName = jsonObject.getString("productName");
+        this.idProduct = jsonObject.getInteger("idproduct");
+        this.productName = jsonObject.getString("productname");
         this.price = jsonObject.getInteger("price");
         this.condition = jsonObject.getString("condition");
         this.quantity = jsonObject.getInteger("quantity");
-        this.totalCost = jsonObject.getInteger("totalCost");
+        this.totalCost = jsonObject.getInteger("totalcost");
     }
 
     public AllProduct(String productName, Integer price, String condition, Integer quantity, Integer totalCost) {
