@@ -63,10 +63,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 basic">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
+                        <label class="title-body">From Product</label>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -75,6 +76,7 @@
                                     <th>Condition</th>
                                     <th>Quantity</th>
                                     <th>Total Cost</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,6 +86,10 @@
                                     <td th:text="${product.condition}"></td>
                                     <td th:text="${product.quantity}"></td>
                                     <td th:text="${product.totalCost}"></td>
+                                    <td>
+                                        <button class="btn btn-primary" th:data-id="${product.idProduct}" onclick="editProduct(this)"><i class="mdi mdi-lead-pencil"></i></button>
+                                        <button class="btn btn-danger"><i class="mdi mdi-trash-can-outline"></i></button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -93,5 +99,16 @@
         </div>
     </div>
 </div>
+
+<th:block layout:fragment="additional-script">
+    <script th:inline="javascript">
+        function editProduct(e){
+            var id = $(e).data("id");
+            console.log("Clicked : " + id);
+            window.location = "../menu/update-product/"+id;
+        }
+    </script>
+</th:block>
+
 </body>
 </html>

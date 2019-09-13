@@ -119,4 +119,86 @@ public class MenuController {
 
     }
 
+    public void updateProductForm(TemplateEngine templateEngine, Vertx vertx ,String id){
+        Integer idproduct = Integer.parseInt(id);
+
+        WebClient client = WebClient.create(vertx);
+
+        client.get(8081,"localhost", "/crud/getproductid")
+                .sendJsonObject(new JsonObject()
+                        .put("idProduct",idproduct),ar ->{
+                if (ar.succeeded()){
+                    JsonObject response = ar.result().bodyAsJsonObject();
+                    //System.out.println(response.getJsonObject("product"));
+                    if (response.containsKey("code") && response.getValue("code").equals(200)){
+                        JsonObject productObj = response.getJsonObject("product");
+
+                        AllProduct allProduct = new AllProduct();
+                        allProduct.setIdProduct(productObj.getInteger("idproduct"));
+                        allProduct.setProductName(productObj.getString("productname"));
+                        allProduct.setPrice(productObj.getInteger("price"));
+                        allProduct.setCondition(productObj.getString("condition"));
+                        allProduct.setQuantity(productObj.getInteger("quantity"));
+                        allProduct.setTotalCost(productObj.getInteger("totalcost"));
+
+                        Session session = context.session();
+
+                        Cookie cookie = context.getCookie("remember-cookie");
+
+                        if (session.get("adisca_acc") == null && cookie == null){
+                            context.addCookie(Cookie.cookie("message", "session_end"))
+                                    .response()
+                                    .setStatusCode(302)
+                                    .putHeader("location", "/")
+                                    .end();
+                        }
+
+                        JsonObject userData = session.get("adisca_acc") != null ? new JsonObject(AES.decrypt(session.get("adisca_acc"),"edof"))
+                                : new JsonObject(AES.decrypt(cookie.getValue(), "edof"));
+
+                        JsonObject data = allProduct.toJson()
+                                .put("loginUserData", userData)
+                                .put("username", userData.getString("username"));
+                        System.out.println(data.encodePrettily());
+
+                        templateEngine.render(data, "webroot/view/priv/update-product.html", er ->{
+                            if (er.succeeded()){
+                                context.response()
+                                        .putHeader("content-type", "text/html")
+                                        .end(er.result());
+                            }else{
+                                context.fail(er.cause());
+                            }
+                        });
+                    }
+                }else{
+                    logger.debug(ar.cause().getMessage());
+                }
+        });
+
+    }
+
+    public void saveUpdateProduct(Vertx vertx){
+        JsonObject productObj = new JsonObject()
+                .put("idProduct", Integer.parseInt(context.request().getParam("id_product")))
+                .put("productName",context.request().getParam("product_name"))
+                .put("price", Integer.parseInt(context.request().getParam("price")))
+                .put("condition",context.request().getParam("condition"))
+                .put("quantity", Integer.parseInt(context.request().getParam("quantity")))
+                .put("totalCost", Integer.parseInt(context.request().getParam("total_cost")));
+
+        WebClient client = WebClient.create(vertx);
+
+        client.put(8081,"localhost","/crud/editproduct/"+productObj.getInteger("idProduct"))
+                .sendJsonObject(productObj, ar ->{
+                    if (ar.succeeded()){
+                        context.response()
+                                .putHeader("location", "/menu/product")
+                                .setStatusCode(302)
+                                .end();
+                    }else{
+                        context.fail(ar.cause());
+                    }
+                });
+    }
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{webroot/view/priv/layout/main_layout.html}">
+<head>
+    <title>Product</title>
+</head>
+<body>
+<ul class="nav flex-column" layout:fragment="menu">
+    <li class="nav-item">
+        <a href="/menu/dashboard" class="nav-link"><i class="mdi mdi-monitor"></i> Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a href="/menu/product" class="nav-link active"><i class="mdi mdi-lead-pencil"></i> Product</a>
+    </li>
+    <li class="nav-item">
+        <a href="/menu/report" class="nav-link"><i class="mdi mdi-table"></i> Report</a>
+    </li>
+</ul>
+<ul class="nav" layout:fragment="bottom-nav">
+    <li class="nav-item"><a href="#" class="nav-link"><i class="mdi mdi-account"></i></a></li>
+    <li class="nav-item"><a href="#" class="nav-link"><i class="mdi mdi-message"></i></a></li>
+    <li class="nav-item"><a href="#" class="nav-link"><i class="mdi mdi-bell"></i></a></li>
+    <li class="nav-item"><a href="../../logout" class="nav-link"><i class="mdi mdi-power"></i></a></li>
+</ul>
+
+<div class="container" layout:fragment="content">
+    <div class="content-header mt-2 mb-3">
+        <h2 class="text-header">Product</h2>
+    </div>
+    <div class="alert alert-danger">
+        This template is under maintenance!
+    </div>
+    <div class="row mb-3 basic">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <label class="title-body">From Product <i class="mdi mdi-lead-pencil"></i></label>
+                    <form action="/menu/update-product" method="post">
+                        <input type="hidden" name="id_product" th:value="${idProduct}">
+                        <div class="form-group">
+                            <label for="name-b">Product Name</label>
+                            <input type="text" class="form-control" name="product_name" id="name-b" th:value="${productName}" placeholder="ex: iPhone Xs">
+                        </div>
+                        <div class="form-group">
+                            <label for="cost-b">Price</label>
+                            <input type="number" class="form-control" name="price" id="cost-b" th:value="${price}" placeholder="Cost ex: $5">
+                        </div>
+                        <div class="form-group">
+                            <label>Condition</label>
+                            <div class="d-flex radio-b">
+                                <label for="condition-a">
+                                    <input type="radio" class="radio-input" name="condition" id="condition-a" th:checked="${condition} == 'new'" value="new"><label class="rc-label" for="condition-a"></label> New
+                                </label>
+                                <label for="condition-b" class="ml-5">
+                                    <input type="radio" class="radio-input" name="condition" id="condition-b" th:checked="${condition} == 'used'" value="used"><label class="rc-label" for="condition-b"></label> Used
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="qty">Quantity</label>
+                            <input type="number" class="form-control" id="qty" name="quantity" th:value="${quantity}" placeholder="Quantity ex: 10">
+                        </div>
+                        <div class="form-group">
+                            <label for="total-b">Total Cost</label>
+                            <input type="number" name="total_cost" class="form-control" id="total-b" th:value="${totalCost}" placeholder="Sum Cost ex: 50">
+                        </div>
+                        <button type="submit" class="btn btn-water-mid">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="additional-script">
+    <script th:inline="javascript">
+        function editProduct(e){
+            var id = $(e).data("id");
+            console.log("Clicked : " + id);
+        }
+    </script>
+</th:block>
+
+</body>
+</html>

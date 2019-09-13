@@ -1,10 +1,12 @@
 package cf.edof.lab.cms.menu;
 
 import cf.edof.lab.cms.model.Product;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.client.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +60,6 @@ public class CrudController {
     }
 
     public void getProduct(){
-
         sqlClient.query("SELECT id_product as idProduct, product_name as productName, price, condition, quantity, total_cost as totalCost FROM product",ar ->{
            if (ar.succeeded()){
                int code = 400;
@@ -77,7 +78,78 @@ public class CrudController {
                        .putHeader("content-type","application/json")
                        .end(message.encodePrettily());
 
+           }else {
+               context.fail(ar.cause());
            }
+        });
+    }
+
+    public void getProductId(){
+        JsonObject valObj = context.getBodyAsJson();
+        sqlClient.query("SELECT id_product as idproduct, product_name as productName, price, condition, quantity, total_cost as totalCost FROM product "+
+                "WHERE id_product = "+valObj.getInteger("idProduct"),ar ->{
+            if (ar.succeeded()){
+                int code = 400;
+                JsonObject message = new JsonObject()
+                        .put("message","Product Not Found!")
+                        .put("code", code);
+
+                if (ar.result().getNumRows() != 0){
+                    code = 200;
+                    message.put("message","success")
+                            .put("code",code)
+                            .put("product", ar.result().getRows().get(0));
+                }
+
+                context.response()
+                        .putHeader("content-type", "application/json")
+                        .setStatusCode(code)
+                        .end(message.encodePrettily());
+            }else{
+                context.fail(ar.cause());
+            }
+        });
+    }
+
+    public void editProduct(String id){
+        Integer productId = Integer.parseInt(id);
+        JsonObject val = context.getBody().toJsonObject();
+
+        //System.out.println(val.encodePrettily());
+
+        Product product = new Product();
+        product.setProductName(val.getString("productName"));
+        product.setPrice(val.getInteger("price"));
+        product.setCondition(val.getString("condition"));
+        product.setQuantity(val.getInteger("quantity"));
+        product.setTotalCost(val.getInteger("totalCost"));
+
+        JsonArray jsonArray = new JsonArray()
+                .add(product.getProductName())
+                .add(product.getPrice())
+                .add(product.getCondition())
+                .add(product.getQuantity())
+                .add(product.getTotalCost())
+                .add(productId);
+
+        //System.out.println("JsonArray = "+jsonArray);
+
+        logger.debug("Product To Update = "+product.toJson());
+        //System.out.println("Product To Update = "+product.toJson());
+
+        sqlClient.updateWithParams("UPDATE product SET product_name = ?, price = ?, condition = ?, quantity = ?, total_cost = ? "+
+                "WHERE id_product = ?", jsonArray, ar->{
+            if (ar.succeeded()){
+                context.response()
+                        .setStatusCode(200)
+                        .putHeader("content-type","application/json")
+                        .end(new JsonObject()
+                                .put("message","success")
+                                .put("code",200)
+                                .put("product",product.toJson()).encodePrettily());
+            }else{
+                context.fail(ar.cause());
+            }
         });
     }
 }

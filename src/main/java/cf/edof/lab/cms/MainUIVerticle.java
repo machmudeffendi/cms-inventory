@@ -55,6 +55,8 @@ public class MainUIVerticle extends AbstractVerticle {
         router.get("/menu/dashboard").handler(this::menuController);
         router.get("/menu/product").handler(this::menuController);
         router.post("/menu/save-product").handler(this::menuController);
+        router.get("/menu/update-product/:id").handler(this::menuController);
+        router.post("/menu/update-product").handler(this::menuController);
 
         //Auth EndPoint API
         router.post("/account/auth").handler(this::accountController);
@@ -63,6 +65,8 @@ public class MainUIVerticle extends AbstractVerticle {
         //CRUD EndPint API
         router.post("/crud/addproduct").handler(this::crudController);
         router.get("/crud/getproduct").handler(this::crudController);
+        router.get("/crud/getproductid").handler(this::crudController);
+        router.put("/crud/editproduct/:id").handler(this::crudController);
 
         //Get app service config
         JsonObject appConfig = config().getJsonObject("app.service");
@@ -325,6 +329,11 @@ public class MainUIVerticle extends AbstractVerticle {
             crud.addProduct();
         }else if ("/crud/getproduct".equalsIgnoreCase(context.request().path())){
             crud.getProduct();
+        }else if (String.format("/crud/editproduct/%s", context.request().getParam("id")).equalsIgnoreCase(context.request().path())){
+            String id = context.request().getParam("id");
+            crud.editProduct(id);
+        }else if ("/crud/getproductid".equalsIgnoreCase(context.request().path())){
+            crud.getProductId();
         }
     }
 
@@ -338,6 +347,11 @@ public class MainUIVerticle extends AbstractVerticle {
             menu.routeProduct(templateEngine, vertx);
         }else if("/menu/save-product".equalsIgnoreCase(context.request().path())){
             menu.saveProductContent(vertx);
+        }else if (String.format("/menu/update-product/%s", context.request().getParam("id")).equalsIgnoreCase(context.request().path())){
+            String id = context.request().getParam("id");
+            menu.updateProductForm(templateEngine,vertx,id);
+        }else if("/menu/update-product".equalsIgnoreCase(context.request().path())){
+            menu.saveUpdateProduct(vertx);
         }
     }
 
