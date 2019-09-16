@@ -25,7 +25,7 @@
 
 <div class="container" layout:fragment="content">
     <div class="content-header mt-2 mb-3">
-        <h2 class="text-header">Product</h2>
+        <h2 class="text-header">Edit Product</h2>
     </div>
     <div class="alert alert-danger">
         This template is under maintenance!
@@ -75,10 +75,33 @@
 
 <th:block layout:fragment="additional-script">
     <script th:inline="javascript">
-        function editProduct(e){
-            var id = $(e).data("id");
-            console.log("Clicked : " + id);
-        }
+        $(document).ready(function(){
+            $("#cost-b").keyup(function(){
+                var price = $("#cost-b").val();
+                var qty = $("#qty").val();
+                var total;
+                if (qty == "" || qty == null){
+                    qty = 0;
+                }
+
+                total = price * qty;
+
+                $("#total-b").val(total);
+            })
+
+            $("#qty").keyup(function(){
+                var price = $("#cost-b").val();
+                var qty = $("#qty").val();
+                var total;
+                if (price == "" || price == null){
+                    price = 0;
+                }
+
+                total = price * qty;
+
+                $("#total-b").val(total);
+            })
+        });
     </script>
 </th:block>
 

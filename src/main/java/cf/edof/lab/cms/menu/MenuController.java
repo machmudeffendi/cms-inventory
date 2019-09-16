@@ -3,6 +3,7 @@ package cf.edof.lab.cms.menu;
 import cf.edof.lab.cms.model.AllProduct;
 import cf.edof.lab.cms.service.AES;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Cookie;
 import io.vertx.ext.web.RoutingContext;
@@ -74,6 +75,21 @@ public class MenuController {
                                     .put("loginUserData",userData)
                                     .put("username", userData.getString("username"));
                             //System.out.println(data.encodePrettily());
+
+                            templateEngine.render(data, "webroot/view/priv/product.html", er ->{
+                                if (er.succeeded()){
+                                    context.response()
+                                            .putHeader("content-type","text/html")
+                                            .end(er.result());
+                                }else{
+                                    context.fail(er.cause());
+
+                                }
+                            });
+                        }else{
+                            JsonObject data = new JsonObject()
+                                    .put("productList", (JsonArray) null);
+                            System.out.println(data.encodePrettily());
 
                             templateEngine.render(data, "webroot/view/priv/product.html", er ->{
                                 if (er.succeeded()){
@@ -200,5 +216,53 @@ public class MenuController {
                         context.fail(ar.cause());
                     }
                 });
+    }
+
+    public void deleteProduct(Vertx vertx){
+        Integer id = Integer.parseInt(context.request().getParam("id"));
+        System.out.println(id);
+        WebClient client = WebClient.create(vertx);
+
+        client.delete(8081, "localhost", "/crud/deleteproduct/"+id)
+                .send(ar ->{
+                    JsonObject response = ar.result().bodyAsJsonObject();
+                    if(ar.succeeded()){
+                        if (response.containsKey("code") && response.getValue("code").equals(200)){
+                            context.response()
+                                    .setStatusCode(302)
+                                    .putHeader("location", "/menu/product")
+                                    .end();
+                        }
+                    }else{
+                        context.fail(ar.cause());
+                    }
+                });
+    }
+
+    public void routeFormInsertProduct(TemplateEngine templateEngine){
+        JsonObject data = new JsonObject();
+
+        Session session = context.session();
+
+        Cookie cookie = context.getCookie("remember-cookie");
+
+        if (session.get("adisca_acc") == null && cookie == null){
+            context.addCookie(Cookie.cookie("message","session_end"))
+                    .response()
+                    .putHeader("location","/")
+                    .setStatusCode(302)
+                    .end();
+            return;
+        }
+
+        templateEngine.render(data, "webroot/view/priv/insert-product.html", ar ->{
+            if (ar.succeeded()){
+                context.response()
+                        .putHeader("content-type", "text/html")
+                        .end(ar.result());
+            }else{
+                context.fail(ar.cause());
+            }
+        });
     }
 }

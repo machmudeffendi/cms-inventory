@@ -152,4 +152,23 @@ public class CrudController {
             }
         });
     }
+
+    public void deleteProduct(){
+        Integer id = Integer.parseInt(context.request().getParam("id"));
+
+        logger.debug("Product to Delete(ID) = "+id);
+        //System.out.println("productId : "+id);
+        sqlClient.query("DELETE FROM product WHERE id_product="+id, ar ->{
+           if (ar.succeeded()){
+               context.response()
+                       .putHeader("content-type", "application/json")
+                       .setStatusCode(200)
+                       .end(new JsonObject()
+                               .put("code", 200)
+                               .put("message","success").encodePrettily());
+           }else{
+               context.fail(ar.cause());
+           }
+        });
+    }
 }

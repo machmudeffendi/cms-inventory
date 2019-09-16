@@ -57,6 +57,8 @@ public class MainUIVerticle extends AbstractVerticle {
         router.post("/menu/save-product").handler(this::menuController);
         router.get("/menu/update-product/:id").handler(this::menuController);
         router.post("/menu/update-product").handler(this::menuController);
+        router.post("/menu/delete-product").handler(this::menuController);
+        router.get("/menu/insert-product").handler(this::menuController);
 
         //Auth EndPoint API
         router.post("/account/auth").handler(this::accountController);
@@ -67,6 +69,7 @@ public class MainUIVerticle extends AbstractVerticle {
         router.get("/crud/getproduct").handler(this::crudController);
         router.get("/crud/getproductid").handler(this::crudController);
         router.put("/crud/editproduct/:id").handler(this::crudController);
+        router.delete("/crud/deleteproduct/:id").handler(this::crudController);
 
         //Get app service config
         JsonObject appConfig = config().getJsonObject("app.service");
@@ -334,6 +337,8 @@ public class MainUIVerticle extends AbstractVerticle {
             crud.editProduct(id);
         }else if ("/crud/getproductid".equalsIgnoreCase(context.request().path())){
             crud.getProductId();
+        }else if (String.format("/crud/deleteproduct/%s", context.request().getParam("id")).equalsIgnoreCase(context.request().path())){
+            crud.deleteProduct();
         }
     }
 
@@ -341,6 +346,20 @@ public class MainUIVerticle extends AbstractVerticle {
         MenuController menu = new MenuController(context);
         CrudController crudController = new CrudController(context,postgreSQLClient);
         logger.debug("PATH = "+context.request().path());
+
+        Session session = context.session();
+
+        Cookie cookie = context.getCookie("remember-cookie");
+
+        if (session.get("adisca_acc") == null && cookie == null){
+            context.addCookie(Cookie.cookie("message","session_end"))
+                    .response()
+                    .putHeader("location","/")
+                    .setStatusCode(302)
+                    .end();
+            return;
+        }
+
         if ("/menu/dashboard".equalsIgnoreCase(context.request().path())){
             menu.routeDashboard(templateEngine);
         }else if("/menu/product".equalsIgnoreCase(context.request().path())){
@@ -352,6 +371,10 @@ public class MainUIVerticle extends AbstractVerticle {
             menu.updateProductForm(templateEngine,vertx,id);
         }else if("/menu/update-product".equalsIgnoreCase(context.request().path())){
             menu.saveUpdateProduct(vertx);
+        }else if ("/menu/delete-product".equalsIgnoreCase(context.request().path())){
+            menu.deleteProduct(vertx);
+        }else if ("/menu/insert-product".equalsIgnoreCase(context.request().path())){
+            menu.routeFormInsertProduct(templateEngine);
         }
     }
 

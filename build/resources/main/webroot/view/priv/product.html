@@ -25,49 +25,13 @@
         This template is under maintenance!
     </div>
     <div class="row mb-3 basic">
-        <div class="col-md-6">
+        <div class="col-md-12 basic">
             <div class="card">
-                <div class="card-body">
-                    <label class="title-body">From Product</label>
-                    <form action="/menu/save-product" method="post">
-                        <div class="form-group">
-                            <label for="name-b">Product Name</label>
-                            <input type="text" class="form-control" name="product_name" id="name-b" placeholder="ex: iPhone Xs">
-                        </div>
-                        <div class="form-group">
-                            <label for="cost-b">Price</label>
-                            <input type="number" class="form-control" name="price" id="cost-b" placeholder="Cost ex: $5">
-                        </div>
-                        <div class="form-group">
-                            <label>Condition</label>
-                            <div class="d-flex radio-b">
-                                <label for="condition-a">
-                                    <input type="radio" class="radio-input" name="condition" id="condition-a" value="new"><label class="rc-label" for="condition-a"></label> New
-                                </label>
-                                <label for="condition-b" class="ml-5">
-                                    <input type="radio" class="radio-input" name="condition" id="condition-b" value="used"><label class="rc-label" for="condition-b"></label> Used
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="qty">Quantity</label>
-                            <input type="number" class="form-control" id="qty" name="quantity" placeholder="Quantity ex: 10">
-                        </div>
-                        <div class="form-group">
-                            <label for="total-b">Total Cost</label>
-                            <input type="number" name="total_cost" class="form-control" id="total-b" placeholder="Sum Cost ex: 50">
-                        </div>
-                        <button type="submit" class="btn btn-water-mid">Submit</button>
-                        <button type="reset" class="btn btn-secondary">Cancel</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 basic">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <label class="title-body">From Product</label>
+                <div class="card-body" th:switch="${productList}">
+                    <label class="title-body">Data Product</label>
+                    <a href="../menu/insert-product" class="btn btn-primary"><i class="mdi mdi-plus"></i> Add Product</a>
+                    <h2 th:case="null">No Product yet!</h2>
+                    <div class="table-responsive" th:case="*">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -88,7 +52,7 @@
                                     <td th:text="${product.totalCost}"></td>
                                     <td>
                                         <button class="btn btn-primary" th:data-id="${product.idProduct}" onclick="editProduct(this)"><i class="mdi mdi-lead-pencil"></i></button>
-                                        <button class="btn btn-danger"><i class="mdi mdi-trash-can-outline"></i></button>
+                                        <button class="btn btn-danger" th:data-id="${product.idProduct}" onclick="deleteProduct(this)"><i class="mdi mdi-trash-can-outline"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -100,12 +64,28 @@
     </div>
 </div>
 
+
 <th:block layout:fragment="additional-script">
     <script th:inline="javascript">
         function editProduct(e){
             var id = $(e).data("id");
-            console.log("Clicked : " + id);
             window.location = "../menu/update-product/"+id;
+        }
+
+        function deleteProduct(e){
+            var idProduct = $(e).data("id");
+            console.log(idProduct)
+            $.ajax({
+                type: "post",
+                url: "/menu/delete-product",
+                data: {id : idProduct},
+                success: function(data){
+                    window.location = "/menu/product";
+                },
+                error: function(data){
+                    console.log("Error "+ data);
+                }
+            })
         }
     </script>
 </th:block>
